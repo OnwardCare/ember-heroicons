@@ -21,12 +21,15 @@ module.exports = {
         } while (current.parent.parent && (current = current.parent));
 
         this.app = app;
-        this._nodeModulesPath = path.join(this.app.project.root, 'node_modules');
         this.readConfig();
+
+        this._nodeModulesPath = this._options.nodeModulesPath || path.join(this.app.project.root, 'node_modules');
+        console.log('nodeModulesPath', this._nodeModulesPath);
     },
 
     readConfig() {
         // options are from ember-cli-build.js
+        console.log('options', this.app.options['ember-heroicons']);
         this._options = this.app.options['ember-heroicons'] || {};
 
         // config is from environment.js
@@ -39,8 +42,23 @@ module.exports = {
         this._config = mergedConfig;
     },
 
+    findHeroIconsPath() {
+        const workspacePath = path.join(this._nodeModulesPath, this.name, 'node_modules', 'heroicons');
+        const defaultPath = path.join(this._nodeModulesPath, 'heroicons');
+
+        console.log('workspacePath:', workspacePath);
+        console.log('defaultPath:', defaultPath);
+
+        if (fs.existsSync(workspacePath)) {
+            return workspacePath;
+        }
+
+        return defaultPath;
+    },
+
     treeForAddon(tree) {
-        const heroIconsPath = path.join(this._nodeModulesPath, 'heroicons');
+        const heroIconsPath = this.findHeroIconsPath();
+        console.log('heroIconsPath:', heroIconsPath);
 
         const toMatcher = (s) => (s instanceof RegExp ? s : new RegExp(`^${s}$`));
 
