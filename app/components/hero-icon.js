@@ -1,1 +1,1 @@
-export { default } from 'ember-heroicons/components/hero-icon';
+export { default } from '@onwardcare/ember-heroicons/components/hero-icon';

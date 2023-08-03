@@ -1,1 +1,1 @@
-export * from 'ember-heroicons/utils/heroicons';
+export * from '@onwardcare/ember-heroicons/utils/heroicons';
